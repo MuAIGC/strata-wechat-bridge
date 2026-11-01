@@ -1,0 +1,34 @@
+# 桥专用的 profile 覆盖层(headless 上没有人在电脑前点审批)。
+#
+# headless 默认档位 workspace-write 配的是 approval: ask —— 手机发指令时没有审批通道,
+# 于是 write/edit/pwsh 提权操作会卡在 "requires approval, but no approval channel is available"。
+# 这里把三个档位的审批策略都定成 never(fail closed):需要审批的操作直接失败,
+# 工作目录内的读写按沙箱规则正常放行。
+#
+# 想从手机上碰整台机器:/mode danger-full-access(需要 allow_mode_switch: true),
+# 或把 feishu.config.json 的 permission_mode 直接写成 danger-full-access。
+[
+  {
+    id: permission,
+    name: '@deepseek-ai/dsh-permission-presets',
+    config: {
+      # 显式指定默认档位:不然复用已有会话时,插件会拿会话里存的 sandbox+approval 组合去
+      # 反推默认档位,推不出匹配项就报 "composed sandbox and approval defaults match no preset"。
+      defaultPreset: workspace-write,
+      presets: {
+        read-only: {
+          sandbox: read-only,
+          approval: never
+        },
+        workspace-write: {
+          sandbox: workspace-write,
+          approval: never
+        },
+        danger-full-access: {
+          sandbox: danger-full-access,
+          approval: never
+        }
+      }
+    }
+  }
+]

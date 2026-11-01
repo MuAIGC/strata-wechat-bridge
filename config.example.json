@@ -1,0 +1,25 @@
+{
+  "allow_from": [],
+  "bot_agent": "Strata/dsh (chat)",
+  "workspace": "",
+  "long_poll_timeout_s": 35,
+  "confirm_first": false,
+  "allow_mode_switch": false,
+  "send_deliverables": true,
+  "auto_relogin": true,
+  "shared_session": true,
+  "session_id": "",
+  "chat_mode": true,
+  "chat_context": true,
+  "relay": false,
+  "relay_ack": true,
+  "inbound_dir": "inbound",
+  "log_file": "",
+  "agent": {
+    "profile": "headless",
+    "patch": "",
+    "extra_patch": "",
+    "permission_mode": "read-only",
+    "timeout_s": 900
+  }
+}

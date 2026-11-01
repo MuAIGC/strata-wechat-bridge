@@ -1,0 +1,46 @@
+# 微信桥的「对话」档:把编程 agent 的人设和工具换成桌面对话助手。
+#
+# 用法:wechat.config.json 里 agent.extra_patch 指向本文件(chat_mode: true)。
+# 想回到能写文件/跑命令的编程档:手机上发 /agent code。
+#
+# 权限沿用 approval: never(headless 没有审批通道),对话档默认 read-only,不会改机器上的东西。
+# 注意:Cordis 的 patch 会整行替换 config,所以 system-prompt 要把它拥有的键写全。
+[
+  {
+    id: permission,
+    name: '@deepseek-ai/dsh-permission-presets',
+    config: {
+      defaultPreset: read-only,
+      presets: {
+        read-only: { sandbox: read-only, approval: never },
+        workspace-write: { sandbox: workspace-write, approval: never },
+        danger-full-access: { sandbox: danger-full-access, approval: never }
+      }
+    }
+  },
+  {
+    id: system-prompt,
+    name: '@deepseek-ai/dsh-system-prompt',
+    config: {
+      personaPrefix: '你是这台 Windows 桌面机器(Strata)上的对话助手,通过微信和用户一对一聊天。像正常人聊天那样回答:先给结论,再补充必要的细节和理由,一般写三四句到六七句,中文优先,把话说清楚。不要单字或一句敷衍("好的""是的""可以"这种要避免),不要复述用户的指令,不要用 markdown 标题、代码块、清单式报告或工具流水账。用户问机器上的事实(有什么文件、某个配置里写了什么)时,可以用只读方式看一眼工作目录再回答;但不要写文件、改文件、跑命令、建子任务或开目标轮次 —— 那是编程档的事,用户要发 /agent code。缺事实就如实说不知道。'
+    }
+  },
+  { id: agent-instructions, name: '@deepseek-ai/dsh-agent-instructions', disabled: true },
+  { id: tool-bash, name: '@deepseek-ai/dsh-tool-bash', disabled: true },
+  { id: tool-pwsh, name: '@deepseek-ai/dsh-tool-pwsh', disabled: true },
+  { id: tool-jobs, name: '@deepseek-ai/dsh-tool-jobs', disabled: true },
+  { id: tool-skill, name: '@deepseek-ai/dsh-tool-skill', disabled: true },
+  { id: tool-subagent, name: '@deepseek-ai/dsh-tool-subagent', disabled: true },
+  { id: tool-subagent-fork, name: '@deepseek-ai/dsh-tool-subagent', disabled: true },
+  { id: tool-subagent-control, name: '@deepseek-ai/dsh-tool-subagent-control', disabled: true },
+  { id: tool-subagent-list-agents, name: '@deepseek-ai/dsh-tool-subagent-control/list-agents', disabled: true },
+  { id: tool-workflow, name: '@deepseek-ai/dsh-tool-workflow', disabled: true },
+  { id: tool-todo, name: '@deepseek-ai/dsh-tool-todo', disabled: true },
+  { id: tool-goal, name: '@deepseek-ai/dsh-tool-goal', disabled: true },
+  { id: tool-working-directory, name: '@deepseek-ai/dsh-tool-working-directory', disabled: true },
+  { id: repeat-tool-reminder, name: '@deepseek-ai/dsh-repeat-tool-reminder', disabled: true },
+  { id: command-goal, name: '@deepseek-ai/dsh-command-goal', disabled: true },
+  { id: goal-round-driver, name: '@deepseek-ai/dsh-goal-round-driver', disabled: true },
+  { id: plan-mode, name: '@deepseek-ai/dsh-plan-mode', disabled: true },
+  { id: mcp-resources, name: '@deepseek-ai/dsh-mcp-resources', disabled: true }
+]
